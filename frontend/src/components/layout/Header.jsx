@@ -150,7 +150,7 @@ export default function Header() {
       {/* Notice Banner */}
       <div className="w-full bg-rose-700/60 flex items-center justify-center py-2 h-10 px-4 text-center">
         <span className="text-white text-xs md:text-sm font-light tracking-wide line-clamp-1">
-          Đây là website phục vụ môn học Digital Marketing và không nhằm mục đích thương mại
+          Đây là website thuộc dự án môn học Digital Marketing của sinh viên Đại học Kinh tế TPHCM (UEH) - không phục vụ mục đích thương mại
         </span>
       </div>
     </header>
