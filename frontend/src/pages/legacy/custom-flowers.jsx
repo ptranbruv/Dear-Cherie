@@ -3,11 +3,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { API_BASE, fetchJson } from '../../api';
 import StepBar from '../../components/StepBar';
 
-export default function Customhoa(){
+export default function Customhoa() {
   const FLOWER_STORAGE_KEY = 'flowerSelection';
   const backendUrl = API_BASE;
   const location = useLocation();
-  
+
   const [products, setProducts] = useState([]);
   const [counts, setCounts] = useState({});
 
@@ -25,7 +25,7 @@ export default function Customhoa(){
         });
       }
       setCounts(restoredCounts);
-    } catch (_) {}
+    } catch (_) { }
   };
 
   useEffect(() => {
@@ -117,49 +117,49 @@ export default function Customhoa(){
 
       {/* Main Content Area */}
       <div className="flex flex-col lg:flex-row gap-6 p-4 md:p-8 lg:p-12 max-w-[1280px] mx-auto w-full flex-grow">
-        
+
         {/* Panel Chọn Hoa (Bên trái) */}
         <div className="w-full lg:w-[60%] bg-[#AF2E38] rounded-[20px] p-4 md:p-6 overflow-y-auto max-h-[60vh] md:max-h-[70vh] scrollbar-hide shadow-inner">
           <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-5 w-full">
             {products.map((flower) => (
-              <div 
-                key={flower._id} 
+              <div
+                key={flower._id}
                 className="flower-card relative w-full overflow-hidden rounded-xl bg-white shadow-md transition-transform hover:shadow-lg"
               >
                 {/* Background base */}
                 <img className="absolute top-0 w-full h-full object-cover z-0" src="/images/CustomizeHoa/nenhoa.png" alt="nen" />
-                
+
                 {/* Inner Content */}
                 <div className="absolute inset-0 flex flex-col z-10 p-2 gap-1">
-                   {/* Price */}
-                   <div className="text-[11px] font-bold italic text-[#AF2E38] pl-1 z-20 shrink-0">
-                     {new Intl.NumberFormat('vi-VN').format(flower.price)} VNĐ
-                   </div>
-                   
-                   {/* Image */}
-                   <div className="flex-1 min-h-0 flex justify-center items-center z-20 overflow-hidden">
-                     <img className="object-contain w-[80%] h-[80%] transition-transform duration-300 hover:scale-110" src={flower.imageUrl} alt={flower.name} />
-                   </div>
-                   
-                   {/* Bottom Content Group (Name, Desc, Buttons) pinned down */}
-                   <div className="flex flex-col shrink-0 items-center z-20">
-                     {/* Name */}
-                     <div className="text-center text-[#3B73A9] text-[11px] sm:text-[13px] font-bold line-clamp-1 px-1 leading-snug">
-                       {flower.name}
-                     </div>
-                     
-                     {/* Description */}
-                     <div className="text-[#444] text-[9px] sm:text-[11px] italic leading-tight text-center line-clamp-1 px-1 pb-1 hidden xs:block">
-                       {flower.description}
-                     </div>
+                  {/* Price */}
+                  <div className="text-[11px] font-bold italic text-[#AF2E38] pl-1 z-20 shrink-0">
+                    {new Intl.NumberFormat('vi-VN').format(flower.price)} VNĐ
+                  </div>
 
-                     {/* Buttons */}
-                     <div className="flex items-center justify-center gap-2 pb-1">
-                       <button onClick={(e) => { e.preventDefault(); decrease(flower._id); }} className="text-[#AF2E38] text-xl font-black w-6 h-6 flex items-center justify-center hover:bg-rose-50 rounded-full transition shadow-sm bg-white/50">-</button>
-                       <span className="text-[#AF2E38] text-sm font-bold italic w-4 text-center">{counts[flower._id] || 0}</span>
-                       <button onClick={(e) => { e.preventDefault(); increase(flower._id); }} className="text-[#AF2E38] text-xl font-black w-6 h-6 flex items-center justify-center hover:bg-rose-50 rounded-full transition shadow-sm bg-white/50">+</button>
-                     </div>
-                   </div>
+                  {/* Image */}
+                  <div className="flex-1 min-h-0 flex justify-center items-center z-20 overflow-hidden">
+                    <img className="object-contain w-[80%] h-[80%] transition-transform duration-300 hover:scale-110" src={flower.imageUrl} alt={flower.name} />
+                  </div>
+
+                  {/* Bottom Content Group (Name, Desc, Buttons) pinned down */}
+                  <div className="flex flex-col shrink-0 items-center z-20">
+                    {/* Name */}
+                    <div className="text-center text-[#3B73A9] text-[11px] sm:text-[13px] font-bold line-clamp-1 px-1 leading-snug">
+                      {flower.name}
+                    </div>
+
+                    {/* Description */}
+                    <div className="text-[#444] text-[9px] sm:text-[11px] italic leading-tight text-center line-clamp-1 px-1 pb-1 block">
+                      {flower.description}
+                    </div>
+
+                    {/* Buttons */}
+                    <div className="flex items-center justify-center gap-2 pb-1">
+                      <button onClick={(e) => { e.preventDefault(); decrease(flower._id); }} className="text-[#AF2E38] text-xl font-black w-6 h-6 flex items-center justify-center hover:bg-rose-50 rounded-full transition shadow-sm bg-white/50">-</button>
+                      <span className="text-[#AF2E38] text-sm font-bold italic w-4 text-center">{counts[flower._id] || 0}</span>
+                      <button onClick={(e) => { e.preventDefault(); increase(flower._id); }} className="text-[#AF2E38] text-xl font-black w-6 h-6 flex items-center justify-center hover:bg-rose-50 rounded-full transition shadow-sm bg-white/50">+</button>
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}
@@ -185,7 +185,7 @@ export default function Customhoa(){
               </div>
             )}
           </div>
-          
+
           {/* Total Bar */}
           <div className="bg-[#AF2E38] p-4 md:p-6 text-white flex justify-between items-center rounded-b-lg">
             <span className="text-xl md:text-3xl font-semibold">Tạm tính</span>
@@ -197,9 +197,9 @@ export default function Customhoa(){
 
       {/* Continue Button */}
       <div className="flex justify-center md:justify-end px-4 md:px-12 pb-12 pt-4">
-        <Link 
-          to="/custom-leaves" 
-          onClick={handleContinue} 
+        <Link
+          to="/custom-leaves"
+          onClick={handleContinue}
           className="bg-[#B8DAFF] text-[#AF2E38] text-xl md:text-2xl font-normal py-3 px-8 rounded-[10px] hover:bg-blue-200 transition-colors shadow-md w-full md:w-auto text-center"
         >
           TIẾP TỤC
