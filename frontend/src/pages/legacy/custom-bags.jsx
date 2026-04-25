@@ -1,0 +1,233 @@
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { API_BASE } from '../../api';
+import StepBar from '../../components/StepBar';
+
+export default function Custombags() {
+  const LEAF_STORAGE_KEY = 'leafSelection';
+  const BAG_STORAGE_KEY = 'bagSelection';
+  const backendUrl = API_BASE;
+  const navigate = useNavigate();
+  
+  const [products, setProducts] = useState([]);
+  const [counts, setCounts] = useState({});
+  const [previousSubtotal, setPreviousSubtotal] = useState(0);
+  const [previousItems, setPreviousItems] = useState([]);
+
+  useEffect(() => {
+    // Lấy toàn bộ items và tổng tiền hoa + lá đã chọn để cộng gộp và hiển thị
+    try {
+      const flowerRaw = localStorage.getItem('flowerSelection');
+      const leafRaw = localStorage.getItem(LEAF_STORAGE_KEY);
+      const flowerParsed = flowerRaw ? JSON.parse(flowerRaw) : { items: [], subtotal: 0 };
+      const leafParsed = leafRaw ? JSON.parse(leafRaw) : { items: [], subtotal: 0 };
+      const combined = [...(flowerParsed.items || []), ...(leafParsed.items || [])];
+      setPreviousItems(combined);
+      setPreviousSubtotal((flowerParsed.subtotal || 0) + (leafParsed.subtotal || 0));
+    } catch (e) {}
+
+    // Fetch Túi từ DB
+    const fetchBags = async () => {
+      try {
+        const res = await fetch(`${backendUrl}/api/products?category=bag`);
+        if (res.ok) {
+          const data = await res.json();
+          setProducts(data);
+          restoreCart(data);
+        }
+      } catch (e) {
+        console.error("Lỗi lấy nguyên liệu túi:", e);
+      }
+    };
+    fetchBags();
+  }, []);
+
+  const restoreCart = (availableProducts) => {
+    try {
+      const raw = localStorage.getItem(BAG_STORAGE_KEY);
+      const parsed = raw ? JSON.parse(raw) : { items: [] };
+      const restoredCounts = {};
+      
+      availableProducts.forEach(p => restoredCounts[p._id] = 0);
+      
+      if (Array.isArray(parsed.items)) {
+        parsed.items.forEach((item) => {
+          if (restoredCounts[item.key] !== undefined) {
+            restoredCounts[item.key] = Math.max(0, Number(item.quantity) || 0);
+          }
+        });
+      }
+      setCounts(restoredCounts);
+    } catch (_error) {}
+  };
+
+  const toggleSelection = (id) => {
+    setCounts((prev) => {
+      // Nếu đang chọn rồi mà bấm lại thì hủy chọn
+      if (prev[id] === 1) return {}; 
+      // Nếu bấm chọn cái mới thì xoá cái cũ, chỉ giữ cái mới
+      return { [id]: 1 };
+    });
+  };
+
+  const selectedItems = products
+    .map((item) => ({
+      key: item._id,
+      label: item.name,
+      imageUrl: item.imageUrl,
+      price: item.price,
+      quantity: counts[item._id] || 0,
+      lineTotal: (counts[item._id] || 0) * item.price
+    }))
+    .filter((item) => item.quantity > 0);
+
+  const bagSubtotal = selectedItems.reduce((sum, item) => sum + item.lineTotal, 0);
+  const totalSubtotal = previousSubtotal + bagSubtotal;
+
+  const formatPrice = (value) => `${new Intl.NumberFormat('vi-VN').format(value)}đ`;
+
+  const persistSelection = () => {
+    const payload = {
+      items: selectedItems.map((item) => ({
+        key: item.key,
+        label: item.label,
+        imageUrl: item.imageUrl,
+        price: item.price,
+        quantity: item.quantity,
+        lineTotal: item.lineTotal
+      })),
+      subtotal: bagSubtotal,
+      updatedAt: Date.now()
+    };
+    localStorage.setItem(BAG_STORAGE_KEY, JSON.stringify(payload));
+    localStorage.removeItem('aiGeneratedImage');
+    localStorage.removeItem('aiGeneratedComboKey');
+    localStorage.removeItem('aiGeneratedCacheVersion');
+  };
+
+  useEffect(() => {
+    persistSelection();
+  }, [totalSubtotal, counts]);
+
+  const handleContinue = () => {
+    persistSelection();
+    navigate('/custom-preview', { state: { generate: true } });
+  };
+
+  return (
+    <div className="w-full min-h-screen bg-Color-3 flex flex-col font-['Geologica'] overflow-x-hidden">
+      <StepBar currentStep={3} />
+
+      {/* Main Content Area */}
+      <div className="flex flex-col lg:flex-row gap-6 p-4 md:p-8 lg:p-12 max-w-[1280px] mx-auto w-full flex-grow">
+        
+        {/* Panel Chọn Túi (Bên trái) */}
+        <div className="w-full lg:w-[60%] bg-[#AF2E38] rounded-[20px] p-4 md:p-6 overflow-y-auto max-h-[60vh] md:max-h-[70vh] scrollbar-hide shadow-inner">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 justify-items-center">
+            {products.map((bag) => (
+              <div 
+                key={bag._id} 
+                className="relative w-full max-w-[260px] aspect-[260/330] flex flex-col items-center overflow-hidden rounded-xl bg-white shadow-md transition-transform hover:shadow-lg cursor-pointer"
+                onClick={() => toggleSelection(bag._id)}
+              >
+                {/* Background base */}
+                <img className="absolute top-0 w-full h-full object-cover z-0" src="/images/CustomizeHoa/nenhoa.png" alt="nen" />
+                
+                {/* Inner Content */}
+                <div className="absolute inset-0 flex flex-col z-10 p-4 gap-2">
+                   {/* Price */}
+                   <div className="text-[13px] font-bold italic text-[#AF2E38] pl-2 z-20 shrink-0">
+                     {new Intl.NumberFormat('vi-VN').format(bag.price)} VNĐ
+                   </div>
+                   
+                   {/* Image */}
+                   <div className="flex-1 min-h-0 flex justify-center items-center z-20 pb-4 pt-2">
+                     <img className="object-contain transition-transform duration-300 h-full w-full scale-[1.5] md:scale-[1.7] hover:scale-[1.6] md:hover:scale-[1.85]" src={bag.imageUrl} alt={bag.name} />
+                   </div>
+                   
+                   {/* Bottom Content Group (Name, Desc) pinned down */}
+                   <div className="flex flex-col shrink-0 items-center justify-end z-20 pb-1">
+                     {/* Name */}
+                     <div className="text-center text-[#3B73A9] text-base md:text-[17px] font-bold line-clamp-1 px-1 leading-snug pb-1">
+                       {bag.name}
+                     </div>
+                     
+                     {/* Description */}
+                     <div className="text-[#444] text-[11px] md:text-[13px] italic leading-tight text-center line-clamp-2 px-1 pb-3 min-h-[32px] md:min-h-[36px] flex items-center justify-center">
+                       {bag.description}
+                     </div>
+                   </div>
+
+                   {/* Custom Checkbox */}
+                   <div
+                     onClick={(e) => {
+                       e.stopPropagation();
+                       toggleSelection(bag._id);
+                     }}
+                     className="absolute top-[52px] left-[62px] w-[22px] h-[22px] rounded-full cursor-pointer flex items-center justify-center transition-all duration-200 z-30"
+                     style={{
+                       border: counts[bag._id] ? '2px solid #3B73A9' : '2px solid #ccc',
+                       background: 'white',
+                       boxShadow: counts[bag._id] ? '0 0 0 3px rgba(59,115,169,0.15)' : 'none',
+                     }}
+                   >
+                     {counts[bag._id] === 1 && (
+                       <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#3B73A9' }}></div>
+                     )}
+                   </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Panel Tạm tính (Bên phải) */}
+        <div className="w-full lg:w-[40%] bg-white rounded-[10px] border border-[#AF2E38] flex flex-col overflow-hidden shadow-sm h-[400px] lg:h-auto">
+          {/* List Items */}
+          <div className="flex-grow overflow-y-auto scrollbar-hide p-4 md:p-6">
+            {previousItems.length === 0 && selectedItems.length === 0 ? (
+              <div className="h-full flex items-center justify-center text-center text-zinc-400 text-base font-light">
+                Chưa có gì được chọn
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3">
+                {/* Hiển thị hoa + lá đã chọn từ trang trước */}
+                {previousItems.map((item) => (
+                  <div key={item.key} className="w-full px-4 py-3 bg-[#FAF9F5] rounded-lg flex items-center justify-between border border-rose-50 shadow-sm opacity-80">
+                    <span className="text-[#AF2E38] text-base md:text-lg font-normal break-words max-w-[60%]">x{item.quantity} {item.label}</span>
+                    <span className="text-[#AF2E38] text-base md:text-lg font-semibold whitespace-nowrap">{formatPrice(item.lineTotal)}</span>
+                  </div>
+                ))}
+                {/* Hiển thị túi đã chọn */}
+                {selectedItems.map((item) => (
+                  <div key={item.key} className="w-full px-4 py-3 bg-[#FAF9F5] rounded-lg flex items-center justify-between border border-rose-50 shadow-sm">
+                    <span className="text-[#AF2E38] text-base md:text-lg font-normal break-words max-w-[60%]">x{item.quantity} {item.label}</span>
+                    <span className="text-[#AF2E38] text-base md:text-lg font-semibold whitespace-nowrap">{formatPrice(item.lineTotal)}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          
+          {/* Total Bar */}
+          <div className="bg-[#AF2E38] p-4 md:p-6 text-white flex justify-between items-center rounded-b-lg">
+            <span className="text-xl md:text-3xl font-semibold">Tạm tính</span>
+            <span className="text-xl md:text-3xl font-light">{new Intl.NumberFormat('vi-VN').format(totalSubtotal)}đ</span>
+          </div>
+        </div>
+
+      </div>
+
+      {/* Continue Button */}
+      <div className="flex justify-center md:justify-end px-4 md:px-12 pb-12 pt-4">
+        <button 
+          onClick={handleContinue} 
+          className="bg-[#B8DAFF] text-[#AF2E38] text-xl md:text-2xl font-normal py-3 px-8 rounded-[10px] hover:bg-blue-200 transition-colors shadow-md w-full md:w-auto text-center"
+        >
+          TIẾP TỤC
+        </button>
+      </div>
+
+    </div>
+  );
+}

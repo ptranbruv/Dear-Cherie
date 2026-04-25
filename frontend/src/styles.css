@@ -1,0 +1,197 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #f3ede2;
+  --paper: #fff9f2;
+  --ink: #292524;
+  --accent: #8a3a2f;
+  --accent-soft: #d6a58f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Flower / Leaf product cards */
+.flower-card {
+  height: 130px;
+}
+@media (min-width: 768px) {
+  .flower-card {
+    height: auto;
+    aspect-ratio: 260 / 330;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--ink);
+  background: radial-gradient(circle at top right, #ffe3cf, var(--bg) 55%);
+  overflow-x: auto;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  overflow: auto;
+  border-bottom: 1px solid #dac7b5;
+  background: #fffbf6f2;
+  backdrop-filter: blur(8px);
+}
+
+.top-nav a {
+  text-decoration: none;
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid #dac7b5;
+  padding: 7px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+.booth-page {
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+.hero p {
+  margin-top: 8px;
+  font-size: 16px;
+}
+
+.panel {
+  background: var(--paper);
+  border: 1px solid #d8c8b8;
+  border-radius: 18px;
+  padding: 14px;
+}
+
+.slot {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 10px;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px dashed #c8ab95;
+}
+
+input,
+select,
+button {
+  border: 1px solid #cab8a8;
+  border-radius: 9px;
+  padding: 8px;
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  color: inherit;
+}
+
+.summary {
+  margin-top: 8px;
+  display: grid;
+  gap: 8px;
+}
+
+.result img {
+  width: 100%;
+  max-width: 560px;
+  border-radius: 14px;
+  border: 1px solid #d8c8b8;
+}
+
+.error {
+  color: #991b1b;
+  font-weight: 600;
+}
+
+/*
+  Legacy Figma pages use fixed 1440px absolute layouts.
+  Scale them down on small screens to keep structure intact.
+*/
+@media (max-width: 1500px) {
+  :root {
+    --legacy-canvas-scale: min(1, calc((100vw - 12px) / 1440));
+  }
+
+  [class*="w-[1440px]"][class*="h-[1000px]"],
+  [class*="w-[1440px]"][class*="h-[1200px]"],
+  [class*="w-[1440px]"][class*="h-[1400px]"],
+  [class*="w-[1440px]"][class*="h-[1958px]"] {
+    width: 1440px !important;
+    max-width: none !important;
+    left: 50% !important;
+    transform: translateX(-50%) scale(var(--legacy-canvas-scale)) !important;
+    transform-origin: top center !important;
+  }
+
+  [class*="w-[1440px]"][class*="h-[1000px]"] {
+    height: calc(1000px * var(--legacy-canvas-scale)) !important;
+  }
+
+  [class*="w-[1440px]"][class*="h-[1200px]"] {
+    height: calc(1200px * var(--legacy-canvas-scale)) !important;
+  }
+
+  [class*="w-[1440px]"][class*="h-[1400px]"] {
+    height: calc(1400px * var(--legacy-canvas-scale)) !important;
+  }
+
+  [class*="w-[1440px]"][class*="h-[1958px]"] {
+    height: calc(1958px * var(--legacy-canvas-scale)) !important;
+  }
+}
+
+@media (max-width: 900px) {
+  :root {
+    /* Keep UI readable on phones/tablets, then allow horizontal pan */
+    --legacy-canvas-scale: 0.62;
+  }
+
+  main {
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  [class*="w-[1440px]"][class*="h-[1000px]"],
+  [class*="w-[1440px]"][class*="h-[1200px]"],
+  [class*="w-[1440px]"][class*="h-[1400px]"],
+  [class*="w-[1440px]"][class*="h-[1958px]"] {
+    left: 0 !important;
+    transform: scale(var(--legacy-canvas-scale)) !important;
+    transform-origin: top left !important;
+  }
+}
