@@ -1349,8 +1349,7 @@ export default function AdminDashboard() {
                       )}
 
                       {section.type === "image" && (
-                        <><input type="text" value={section.imageUrl} onChange={(e) => updateBlogSection(index, "imageUrl", e.target.value)} placeholder="Image URL" className="w-full px-3 py-2 bg-white border rounded-md outline-none focus:border-rose-500" />
-                        <input type="text" value={section.caption} onChange={(e) => updateBlogSection(index, "caption", e.target.value)} placeholder="Chú thích ảnh (không bắt buộc)" className="w-full px-3 py-2 bg-white border rounded-md outline-none focus:border-rose-500" /></>
+                        <input type="text" value={section.imageUrl} onChange={(e) => updateBlogSection(index, "imageUrl", e.target.value)} placeholder="Image URL" className="w-full px-3 py-2 bg-white border rounded-md outline-none focus:border-rose-500" />
                       )}
                     </div>
                   ))}
