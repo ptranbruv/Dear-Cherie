@@ -104,7 +104,7 @@ export default function AboutUs() {
                 <span className="font-bold text-[9px] sm:text-[11px] md:text-sm lg:text-[17px] uppercase tracking-widest text-center text-zinc-900 drop-shadow-sm leading-tight">Lý Tú Trân</span>
              </div>
              <div className="absolute top-[103%] md:top-[104%] left-[88%] -translate-x-1/2 flex justify-center w-[30%]">
-                <span className="font-bold text-[9px] sm:text-[11px] md:text-sm lg:text-[17px] uppercase tracking-widest text-center text-zinc-900 drop-shadow-sm leading-tight">Phan Minh Thúy Trâm</span>
+                <span className="font-bold text-[9px] sm:text-[11px] md:text-sm lg:text-[17px] uppercase tracking-widest text-center text-zinc-900 drop-shadow-sm leading-tight">Phan Minh Thủy Trâm</span>
              </div>
           </div>
         </div>

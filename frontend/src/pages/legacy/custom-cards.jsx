@@ -204,7 +204,7 @@ export default function Customcards() {
               <div className="flex flex-col gap-2 w-full md:w-1/2">
                 <span className="text-[#215E98] text-base font-black">Lời nhắn nhanh</span>
                 <div className="flex flex-wrap gap-2">
-                  {["Congratuations!", "Happy Birthday!", "Anh yêu em!", "Happy Anniversary", "Đừng giận tớ nữa nhé!", "I miss you"].map((msg, idx) => (
+                  {["Congratulations!", "Happy Birthday!", "Anh yêu em!", "Happy Anniversary", "Đừng giận tớ nữa nhé!", "I miss you"].map((msg, idx) => (
                      <button 
                        key={idx}
                        onClick={() => setMessage(prev => prev ? prev + "\n" + msg : msg)}
