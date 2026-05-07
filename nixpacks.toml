@@ -1,7 +1,7 @@
 [phases.setup]
 nixPkgs = ["nodejs_20"]
 
-[phases.install]
+[phases.build]
 cmds = ["cd backend && npm ci"]
 
 [start]
