@@ -44,7 +44,7 @@ export default function Footer() {
           </div>
           <div>
             <p className="text-rose-700 font-bold text-sm">EMAIL:</p>
-            <a href="mailto:dearcherie.info@gmail.com" className="font-bold underline hover:opacity-80 transition break-all">dearcherie.info@gmail.com</a>
+            <a href="mailto:dearcherieflowerbag@gmail.com" className="font-bold underline hover:opacity-80 transition break-all">dearcherieflowerbag@gmail.com</a>
           </div>
           <div>
             <p className="text-rose-700 font-bold text-sm">KẾT NỐI:</p>
