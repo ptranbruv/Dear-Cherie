@@ -5,6 +5,11 @@ import App from "./App";
 import "./styles.css";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
+import { HelmetProvider } from 'react-helmet-async';
+
+<HelmetProvider>
+  <App />
+</HelmetProvider>
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
