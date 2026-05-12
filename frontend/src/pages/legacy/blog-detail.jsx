@@ -31,11 +31,11 @@ export default function BlogDetail() {
   return (
     <div className="w-full bg-Color-3 pb-24 pt-10">
       <Helmet>
-  <title>{blog.title} | Dear, chérie</title>
-  <meta name="description" content={blog.summary} />
-  <meta property="og:title" content={blog.title} />
-  <meta property="og:description" content={blog.summary} />
-</Helmet>
+        <title>{blog.title} | Dear, chérie</title>
+        <meta name="description" content={blog.summary} />
+        <meta property="og:title" content={blog.title} />
+        <meta property="og:description" content={blog.summary} />
+      </Helmet>
       <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-10">
         <section className={`relative rounded-[28px] ${blog.themeColor || 'bg-pink-300/40'} border border-red-50 p-6 md:p-8`}>
           <h1 className="text-2xl md:text-5xl text-rose-700 font-bold font-['Gentium_Book_Plus'] leading-tight md:leading-[60px]">
