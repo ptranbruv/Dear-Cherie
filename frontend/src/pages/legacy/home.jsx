@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { API_BASE } from "../../api";
+import { Helmet } from "react-helmet-async";
 
 const defaultReviewSection = {
   sectionTitle: "ĐÁNH GIÁ TỪ HỘI YÊU HOA",
@@ -93,6 +94,11 @@ export default function Home() {
 
   return (
     <div className="w-full flex-col">
+     <Helmet>
+      <title>Dear, Chérie - Túi Hoa Cá Nhân Hoá</title>
+      <meta name="description" content="Dear Chérie - Túi hoa quà tặng độc đáo. Thiết kế túi hoa cá nhân hoá theo phong cách, trang phục và dịp sử dụng của bạn." />
+     </Helmet>
+
       {/* Hero Section */}
       <section className="relative w-full overflow-hidden bg-Color-3 flex">
         {/* Left background flower creeping up */}
