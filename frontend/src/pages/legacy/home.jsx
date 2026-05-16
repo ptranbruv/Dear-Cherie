@@ -95,8 +95,8 @@ export default function Home() {
   return (
     <div className="w-full flex-col">
      <Helmet>
-      <title>Dear, Chérie - Túi Hoa Cá Nhân Hoá</title>
-      <meta name="description" content="Dear Chérie - Túi hoa quà tặng độc đáo. Thiết kế túi hoa cá nhân hoá theo phong cách, trang phục và dịp sử dụng của bạn." />
+      <title>Dear, Chérie Flower bag - Túi Hoa Cá Nhân Hoá bằng AI</title>
+      <meta name="description" content="Dear Chérie - Túi hoa quà tặng độc đáo. Thiết kế túi hoa cá nhân hoá bằng AI, trang phục và dịp sử dụng của bạn."/>
      </Helmet>
 
       {/* Hero Section */}
